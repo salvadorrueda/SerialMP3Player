@@ -27,12 +27,9 @@ void loop() {
     menu(op);
   }
  // Check for the answer.
-  if (mp3.available())
-  {
-    Serial.println(mp3.decodeMP3Answer());
-  }
-  
-  delay(1000);
+  r = mp3.decodeMP3Answer();
+  if(r!="") Serial.println(r);
+  //delay(1000);
 }
 
 void menu(char op){
@@ -48,7 +45,7 @@ void menu(char op){
       break;
       
     case 'p':
-      mp3.play();
+      Serial.println(mp3.play(7,100));
       break;
       
     case ' ':

@@ -15,25 +15,28 @@ String SerialMP3Player::setup(){
   //Serial.begin(9600);
   mp3.begin(9600);
   delay(500);
-  return sendCommand(CMD_SEL_DEV, DEV_TF);
+  return sendCommand(CMD_SEL_DEV, DEV_TF, 0);
   //delay(200);  
   
 }
 
-int SerialMP3Player::available(){
-  return mp3.available();
-}
 
 
 String SerialMP3Player::play(){
-   return sendCommand(CMD_PLAY, 0);
+   return sendCommand(CMD_PLAY, 0, 0);
 } 
 
 
 String SerialMP3Player::play(int n){
    // n number of the file that must be played  
    
-   return sendCommand(CMD_PLAY_W_INDEX, n);
+   return sendCommand(CMD_PLAY_W_INDEX, 0, n);
+} 
+
+String SerialMP3Player::play(int n, int vol){
+   // n number of the file that must be played  
+   
+   return sendCommand(CMD_PLAY_W_VOL, vol, n);
 } 
 
 
@@ -42,8 +45,10 @@ String SerialMP3Player::play(int n){
 
 
 
-String SerialMP3Player::sendCommand(int8_t command, int16_t dat){
-  static int8_t Send_buf[8] = {0}; // Buffer for Send commands.  
+
+String SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
+  byte Send_buf[8] = {0}; // Buffer for Send commands.  
+  String mp3send = "";
 
   // Command Structure 0x7E 0xFF 0x06 CMD FBACK DAT1 DAT2 0xEF
    
@@ -53,15 +58,18 @@ String SerialMP3Player::sendCommand(int8_t command, int16_t dat){
   Send_buf[2] = 0x06;    // Command length not including Start and End byte.
   Send_buf[3] = command; // Command
   Send_buf[4] = 0x01;    // Feedback 0x00 NO, 0x01 YES
-  Send_buf[5] = (int8_t)(dat >> 8);  // DATA1 datah
-  Send_buf[6] = (int8_t)(dat);       // DATA2 datal
+  Send_buf[5] = dat1;    // DATA1 datah
+  Send_buf[6] = dat2;    // DATA2 datal
   Send_buf[7] = 0xEF;    // End byte
 
-  for(uint8_t i=0; i<8; i++)
+  for(int i=0; i<8; i++)
   {
     mp3.write(Send_buf[i]) ;
+    mp3send+=sbyte2hex(Send_buf[i]);       
   }
 
+  Serial.println(mp3send);
+  
   delay(200); 
   
   return decodeMP3Answer();  
@@ -84,21 +92,41 @@ String SerialMP3Player::decodeMP3Answer(){
   
      switch (ansbuf[3])
      {
-      case 0x3A:
-         decodedMP3Answer+=" -> Memory card inserted.";
-         break; 
-         
-      case 0x3D:
-         decodedMP3Answer+=" -> Completed play num "+String(ansbuf[6],DEC);
-         break; 
-         
-      case 0x4C:
-         decodedMP3Answer+=" -> Playing: "+String(ansbuf[6],DEC);
-         break;
-      
-      case 0x41:
-         decodedMP3Answer+=" -> Data recived correctly. ";
-         break;           
+    case 0x3A:
+      decodedMP3Answer += " -> Memory card inserted.";
+      break;
+
+    case 0x3D:
+      decodedMP3Answer += " -> Completed play num " + String(ansbuf[6], DEC);
+      break;
+
+    case 0x40:
+      decodedMP3Answer += " -> Error";
+      break;
+
+    case 0x41:
+      decodedMP3Answer += " -> Data recived correctly. ";
+      break;
+
+    case 0x42:
+      decodedMP3Answer += " -> Status playing: " + String(ansbuf[6], DEC);
+      break;
+
+    case 0x48:
+      decodedMP3Answer += " -> File count: " + String(ansbuf[6], DEC);
+      break;
+
+    case 0x4C:
+      decodedMP3Answer += " -> Playing: " + String(ansbuf[6], DEC);
+      break;
+
+    case 0x4E:
+      decodedMP3Answer += " -> Folder file count: " + String(ansbuf[6], DEC);
+      break;
+
+    case 0x4F:
+      decodedMP3Answer += " -> Folder count: " + String(ansbuf[6], DEC);
+      break;
      } 
    ansbuf[3] = 0; // Clear ansbuff.
    return decodedMP3Answer;
@@ -114,7 +142,7 @@ String SerialMP3Player::decodeMP3Answer(){
 /*Return: String                                                                */
 
 
-String sbyte2hex(uint8_t b)
+String SerialMP3Player::sbyte2hex(byte b)
 {
   String shex;
   
@@ -148,7 +176,7 @@ String SerialMP3Player::sanswer(void)
   //  read while something readed and it's not the end "0xEF"
   
 
-  uint8_t b;
+  byte b;
   String mp3answer="";                // Answer from the MP3.  
   int iansbuf = 0;  
 

@@ -51,20 +51,22 @@
 
 class SerialMP3Player{
    SoftwareSerial mp3 = SoftwareSerial(ARDUINO_RX, ARDUINO_TX);
-   uint8_t ansbuf[10] = {0}; // Buffer for the answers.     
+   byte ansbuf[10] = {0}; // Buffer for the answers.     
 
   
    public:
      String setup();
-     int available();
      String decodeMP3Answer();
-     String play();
-     String play(int n); 
+     String play();           // Play
+     String play(int n);      // Play n file
+     String play(int n, int vol); // Play n file with volume
 
    private:
-     String sendCommand(int8_t command, int16_t dat);
+     String sendCommand(byte command, byte dat1, byte dat2);
      String sanswer();
      int shex2int(char *s, int n);
+     String sbyte2hex(byte b);
+
 };
 
 
