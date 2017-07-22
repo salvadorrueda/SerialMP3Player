@@ -7,7 +7,7 @@
 #ifndef SerialMP3Player_h
 #define SerialMP3Player_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 #define CMD_NEXT_SONG     0X01  // Play next song.
 #define CMD_PREV_SONG     0X02  // Play previous song.
@@ -43,18 +43,28 @@
 #define SINGLE_CYCLE_OFF  0X01
 
 
-#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
+// Uncomment SoftwareSerial for Arduino Uno or Nano.
+#include <SoftwareSerial.h>
 
+#define ARDUINO_RX 5  //should connect to TX of the Serial MP3 Player module
+#define ARDUINO_TX 6  //connect to RX of the module
 
 class SerialMP3Player{
+   SoftwareSerial mp3 = SoftwareSerial(ARDUINO_RX, ARDUINO_TX);
+   uint8_t ansbuf[10] = {0}; // Buffer for the answers.     
+
+  
    public:
-     SerialMP3Player();
      String setup();
-     String play();
+     int available();
      String decodeMP3Answer();
+     String play();
+     String play(int n); 
 
    private:
      String sendCommand(int8_t command, int16_t dat);
+     String sanswer();
+     int shex2int(char *s, int n);
 };
 
 
