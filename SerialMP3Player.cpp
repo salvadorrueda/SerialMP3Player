@@ -11,48 +11,118 @@
 // Uncomment next line if you are using an Arduino Mega.
 //#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
 
-String SerialMP3Player::setup(){
-  //Serial.begin(9600);
-  mp3.begin(9600);
-  delay(500);
-  return sendCommand(CMD_SEL_DEV, DEV_TF, 0);
-  //delay(200);  
-  
+void SerialMP3Player::begin(int bps){
+  mp3.begin(bps); 
 }
 
 
 
-String SerialMP3Player::play(){
-   return sendCommand(CMD_PLAY, 0, 0);
+void SerialMP3Player::playNext(){
+  sendCommand(CMD_NEXT);
+} 
+
+void SerialMP3Player::playPrevious(){
+  sendCommand(CMD_PREV);
 } 
 
 
-String SerialMP3Player::play(int n){
+void SerialMP3Player::volUp(){
+   sendCommand(CMD_VOL_UP);
+} 
+
+void SerialMP3Player::volDown(){
+   sendCommand(CMD_VOL_DOWN);
+} 
+
+void SerialMP3Player::setVol(byte v){
+   // Set volumen (0-30)
+   sendCommand(CMD_SET_VOL, v);
+} 
+
+void SerialMP3Player::playSL(byte n){
+   // Play single loop n file 
+   sendCommand(CMD_PLAY_SLOOP, n);
+} 
+
+// Doesn't seems work properly :?
+void SerialMP3Player::playSL(byte f, byte n){
+   // Single loop play n file from f folder 
+   sendCommand(CMD_PLAY_SLOOP, f, n);
+} 
+
+void SerialMP3Player::play(){
+   sendCommand(CMD_PLAY);
+} 
+
+void SerialMP3Player::pause(){
+   sendCommand(CMD_PAUSE);
+} 
+
+
+
+
+void SerialMP3Player::play(byte n){
+   // n number of the file that must be played.
+   // n possible values (1-255)   
+   sendCommand(CMD_PLAYN, n);
+} 
+void SerialMP3Player::play(byte n, byte vol){
    // n number of the file that must be played  
-   
-   return sendCommand(CMD_PLAY_W_INDEX, 0, n);
+     
+   sendCommand(CMD_PLAY_W_VOL, vol, n);
 } 
 
-String SerialMP3Player::play(int n, int vol){
-   // n number of the file that must be played  
+        
+void SerialMP3Player::playF(byte f){
+   // Play all files in the f folder   
    
-   return sendCommand(CMD_PLAY_W_VOL, vol, n);
+   sendCommand(CMD_FOLDER_CYCLE, f);
 } 
 
 
+void SerialMP3Player::playFN(byte f, byte n){ 
+   // Play named n files in the f folder    
+   
+   sendCommand(CMD_PLAY_F_FILE, n, f);
+} 
+
+void SerialMP3Player::stop(){ 
+   sendCommand(CMD_STOP_PLAY);
+} 
 
 
+void SerialMP3Player::qPlaying(){ 
+  // Ask for the file is playing
+   sendCommand(CMD_PLAYING_N);
+} 
+
+void SerialMP3Player::qStatus(){ 
+   // Ask for the status.
+   sendCommand(CMD_QUERY_STATUS);
+} 
+
+void SerialMP3Player::qVol(){ 
+  // Ask for the volumen
+   sendCommand(CMD_QUERY_VOLUME);
+} 
 
 
+void SerialMP3Player::sendCommand(byte command){
+  sendCommand(command, 0, 0);
+}
+
+void SerialMP3Player::sendCommand(byte command, byte dat2){
+  sendCommand(command, 0, dat2);
+}
 
 
-String SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
+void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
   byte Send_buf[8] = {0}; // Buffer for Send commands.  
   String mp3send = "";
 
   // Command Structure 0x7E 0xFF 0x06 CMD FBACK DAT1 DAT2 0xEF
    
-  //delay(20);
+  delay(20);
   Send_buf[0] = 0x7E;    // Start byte
   Send_buf[1] = 0xFF;    // Version
   Send_buf[2] = 0x06;    // Command length not including Start and End byte.
@@ -67,18 +137,17 @@ String SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
     mp3.write(Send_buf[i]) ;
     mp3send+=sbyte2hex(Send_buf[i]);       
   }
-
-  Serial.println(mp3send);
+   
+  Serial.print("Sending: ");
+  Serial.println(mp3send); // watch what are we sending
   
-  delay(200); 
-  
-  return decodeMP3Answer();  
+  //delay(200);  // Wait between sending commands.
+ 
 }
 
 //String sanswer(void);
 //int iansbuf = 0;                 // Index for answer buffer.
 //static uint8_t ansbuf[10] = {0}; // Buffer for the answers.     
-
 
 String SerialMP3Player::decodeMP3Answer(){
  // Response Structure  0x7E 0xFF 0x06 RSP 0x00 0x00 DAT 0xFE 0xBA 0xEF
@@ -109,15 +178,25 @@ String SerialMP3Player::decodeMP3Answer(){
       break;
 
     case 0x42:
-      decodedMP3Answer += " -> Status playing: " + String(ansbuf[6], DEC);
+      switch(ansbuf[6]){
+        case 0: decodedMP3Answer += " -> Status: stopped"; break;
+        case 1: decodedMP3Answer += " -> Status: playing"; break;
+        case 2: decodedMP3Answer += " -> Status: paused"; break;
+      }
+      break;
+
+    case 0x43:
+      decodedMP3Answer += " -> Vol playing: " + String(ansbuf[6], DEC);
       break;
 
     case 0x48:
       decodedMP3Answer += " -> File count: " + String(ansbuf[6], DEC);
       break;
 
+
     case 0x4C:
       decodedMP3Answer += " -> Playing: " + String(ansbuf[6], DEC);
+      
       break;
 
     case 0x4E:
@@ -128,9 +207,13 @@ String SerialMP3Player::decodeMP3Answer(){
       decodedMP3Answer += " -> Folder count: " + String(ansbuf[6], DEC);
       break;
      } 
+
+
+     
    ansbuf[3] = 0; // Clear ansbuff.
    return decodedMP3Answer;
 }
+
 
 
 
@@ -162,6 +245,7 @@ String SerialMP3Player::sbyte2hex(byte b)
 /********************************************************************************/
 /*Function: sanswer. Returns a String answer from mp3 UART module.	            */
 /*Return: String.  the answer                                                   */
+
 
 String SerialMP3Player::sanswer(void)
 {
@@ -200,7 +284,9 @@ String SerialMP3Player::sanswer(void)
   return mp3answer; 
  }
  
+
  
+
 
 
 
