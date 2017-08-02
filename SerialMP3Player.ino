@@ -17,7 +17,7 @@ void setup() {
   mp3.begin(9600);
   delay(500);
 
-  mp3.sendCommand(CMD_SEL_DEV, 2, 0);
+  mp3.sendCommand(CMD_SEL_DEV, 0, 2);
   delay(500);
 }
 
