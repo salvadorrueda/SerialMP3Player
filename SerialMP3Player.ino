@@ -83,9 +83,10 @@ void menu(char op){
       // Test pause
       //  mp3.pause();
           
-      // Test playFN ERROR need to be checked.
+      // Test playFN(f, n) ERROR need to be checked.
       // Play n file (name not number) in the f folder 
-      //  mp3.playFN(1,1);
+      
+        mp3.playFN(15,4);
 
       // Test stop
       //  mp3.stop();
@@ -100,15 +101,27 @@ void menu(char op){
 
       // Test qVol
       // Ask for the volumen
-        mp3.qVol();     
+      //  mp3.qVol();   // Sometimes Board stop working properly.
 
+      // Test qTFolders 
+      // Ask for the number of folders
+      //    mp3.qTFolders(); // Nonsense answer
+          
+      // Test qFTracks
+      // Ask for the number of tracks folders
+      //    mp3.qFTracks();   // Nonsense answer
 
+      // Test qTTracks    
+      // Ask for the total of tracks 
+      //    mp3.qTTracks();  
+
+          
       // Test qStatus. 
       //  Ask for the status
       //    0. stopped
       //    1. playing
       //    2. paused
-          mp3.qStatus();
+      //    mp3.qStatus();
 
       
       // Testing sending a Command;

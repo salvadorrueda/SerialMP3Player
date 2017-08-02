@@ -83,7 +83,7 @@ void SerialMP3Player::playF(byte f){
 void SerialMP3Player::playFN(byte f, byte n){ 
    // Play named n files in the f folder    
    
-   sendCommand(CMD_PLAY_F_FILE, n, f);
+   sendCommand(CMD_PLAY_F_FILE, f, n);
 } 
 
 void SerialMP3Player::stop(){ 
@@ -105,6 +105,25 @@ void SerialMP3Player::qVol(){
   // Ask for the volumen
    sendCommand(CMD_QUERY_VOLUME);
 } 
+
+void SerialMP3Player::qFTracks(){    // !!! Nonsense answer
+  // Ask for the number of tracks folders
+   sendCommand(CMD_QUERY_FLDR_TRACKS);
+} 
+
+void SerialMP3Player::qTTracks(){   
+  // Ask for the total of tracks
+   sendCommand(CMD_QUERY_TOT_TRACKS);
+} 
+
+
+void SerialMP3Player::qTFolders(){  // !!! Nonsense answer
+  // Ask for the number of folders
+   sendCommand(CMD_QUERY_FLDR_COUNT);
+} 
+
+ 
+
 
 
 void SerialMP3Player::sendCommand(byte command){

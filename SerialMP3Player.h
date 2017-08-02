@@ -36,17 +36,16 @@
 #define CMD_PLAY_W_VOL       0X22 // Play with a volumen 
   
 // Query Commands
-#define CMD_PLAYING_N         0x4C // qPlaying(); // Ask for the file is playing
-#define CMD_QUERY_STATUS      0x42 // qStatus();  // Ask for the status 
-#define CMD_QUERY_VOLUME      0x43 // qVol();     // Ask for the volumen
-#define CMD_QUERY_FLDR_TRACKS 0x4E
-#define CMD_QUERY_TOT_TRACKS  0x48
-#define CMD_QUERY_FLDR_COUNT  0x4F
+#define CMD_PLAYING_N         0x4C // qPlaying();  // Ask for the file is playing
+#define CMD_QUERY_STATUS      0x42 // qStatus();   // Ask for the status 
+#define CMD_QUERY_VOLUME      0x43 // qVol();      // Ask for the volumen. // Sometime board fails
+#define CMD_QUERY_FLDR_TRACKS 0x4E // qFTracks();  // Ask for the number of tracks folders
+#define CMD_QUERY_TOT_TRACKS  0x48 // qTTracks();  // Ask for the total of tracks 
+#define CMD_QUERY_FLDR_COUNT  0x4F // qTFolders(); // Ask for the number of folders
 
 
 /************ Opitons **************************/  
              
-
 
 
 // Uncomment SoftwareSerial for Arduino Uno or Nano.
@@ -81,18 +80,21 @@ class SerialMP3Player{
      void playSL(byte n);         // Play Single loop  n file.
      void playSL(byte f, byte n); // Play Single loop play n file from f folder. :?
 
-     void pause();              // Pause
+     void pause();                // Pause
      
      void playF(byte f);          // Play all files in the f folder  
-     void playFN(byte f, byte n);  // Play file named n from f folder
+     void playFN(byte f, byte n); // Play file named n from f folder
      
-     void stop();               // Stop playing
+     void stop();                 // Stop playing
 
      // Query commands
      void qPlaying();   // Ask for the file is playing
      void qStatus();    // Ask for the status
-     void qVol();     // Ask for the volumen
-
+     void qVol();       // Ask for the volumen // !!! Sometimes board stop working
+     void qFTracks();   // Ask for the number of tracks folders // Nonsense answer
+     void qTTracks();   // Ask for the total of tracks      
+     void qTFolders();  // Ask for the number of folders  // Nonsense answer
+ 
 
      
      
