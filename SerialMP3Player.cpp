@@ -16,7 +16,6 @@ void SerialMP3Player::begin(int bps){
 }
 
 
-
 void SerialMP3Player::playNext(){
   sendCommand(CMD_NEXT);
 } 
@@ -146,15 +145,15 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
   Send_buf[1] = 0xFF;    // Version
   Send_buf[2] = 0x06;    // Command length not including Start and End byte.
   Send_buf[3] = command; // Command
-  Send_buf[4] = 0x01;    // Feedback 0x00 NO, 0x01 YES
+  Send_buf[4] = 0x01;    // Feedback 0x00 NO, 0x01 YES, what does this actually mean?
   Send_buf[5] = dat1;    // DATA1 datah
   Send_buf[6] = dat2;    // DATA2 datal
   Send_buf[7] = 0xEF;    // End byte
 
   for(int i=0; i<8; i++)
   {
-    mp3.write(Send_buf[i]) ;
-    mp3send+=sbyte2hex(Send_buf[i]);       
+    mp3.write(Send_buf[i]) ;               //send the above hexstrings together as one string/command
+    mp3send+=sbyte2hex(Send_buf[i]);       //convert hex
   }
    
   Serial.print("Sending: ");
@@ -169,7 +168,7 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
 //static uint8_t ansbuf[10] = {0}; // Buffer for the answers.     
 
 String SerialMP3Player::decodeMP3Answer(){
- // Response Structure  0x7E 0xFF 0x06 RSP 0x00 0x00 DAT 0xFE 0xBA 0xEF
+  // Response Structure  0x7E 0xFF 0x06 RSP 0x00 0x00 DAT 0xFE 0xBA 0xEF
   // 
   // RSP Response code 
   // DAT Response additional data
@@ -181,19 +180,19 @@ String SerialMP3Player::decodeMP3Answer(){
      switch (ansbuf[3])
      {
     case 0x3A:
-      decodedMP3Answer += " -> Memory card inserted.";
+      decodedMP3Answer += " -> Memory card detected.";
       break;
 
     case 0x3D:
-      decodedMP3Answer += " -> Completed play num " + String(ansbuf[6], DEC);
+      decodedMP3Answer += " -> Completed playing song: " + String(ansbuf[6], DEC);
       break;
 
     case 0x40:
-      decodedMP3Answer += " -> Error";
+      decodedMP3Answer += " -> Error!";
       break;
 
     case 0x41:
-      decodedMP3Answer += " -> Data recived correctly. ";
+      decodedMP3Answer += " -> Data received correctly.";
       break;
 
     case 0x42:
@@ -205,41 +204,33 @@ String SerialMP3Player::decodeMP3Answer(){
       break;
 
     case 0x43:
-      decodedMP3Answer += " -> Vol playing: " + String(ansbuf[6], DEC);
+      decodedMP3Answer += " -> Volume playing: " + String(ansbuf[6], DEC);
+      break;
+
+    case 0x4C:
+      decodedMP3Answer += " -> Playing: " + String(ansbuf[6], DEC);
       break;
 
     case 0x48:
       decodedMP3Answer += " -> File count: " + String(ansbuf[6], DEC);
       break;
-
-
-    case 0x4C:
-      decodedMP3Answer += " -> Playing: " + String(ansbuf[6], DEC);
-      
-      break;
-
-    case 0x4E:
-      decodedMP3Answer += " -> Folder file count: " + String(ansbuf[6], DEC);
-      break;
-
+         
     case 0x4F:
       decodedMP3Answer += " -> Folder count: " + String(ansbuf[6], DEC);
       break;
-     } 
-
-
-     
+  
+    case 0x4E:
+      decodedMP3Answer += " -> Folder and file count: " + String(ansbuf[6], DEC);
+      break;
+         
+      }   
    ansbuf[3] = 0; // Clear ansbuff.
    return decodedMP3Answer;
 }
 
 
-
-
-
-
 /********************************************************************************/
-/*Function: sbyte2hex. Returns a byte data in HEX format.	                */
+/*Function: sbyte2hex. Returns a byte data in HEX format.	                      */
 /*Parameter:- uint8_t b. Byte to convert to HEX.                                */
 /*Return: String                                                                */
 
@@ -283,30 +274,23 @@ String SerialMP3Player::sanswer(void)
   String mp3answer="";                // Answer from the MP3.  
   int iansbuf = 0;  
 
-  if (mp3.available()){
+  if (mp3.available()){               //if mp3 is connected
    do{
     b = mp3.read();
     
-    if(b == 0x7E){  // if there are "0x7E" it's a beginning.
+    if(b == 0x7E){  // if there is "0x7E", it means it's the beginning of a hexidecimal string --> a command for the mp3
       iansbuf=0;    //  ansbuf index to zero.
-      mp3answer="";
+      mp3answer=""; //give a space for the mp3 answer
     }
     
-    ansbuf[iansbuf] = b;
-    mp3answer+=sbyte2hex(ansbuf[iansbuf]);       
-    iansbuf++; //  increase this index.     
+    ansbuf[iansbuf] = b;                          //assign to a variable
+    mp3answer+=sbyte2hex(ansbuf[iansbuf]);        //convert hex 
+    iansbuf++;                                    //  increase this index.     
     
    }while(b != 0xEF);
-   // while there are something to read and it's not the end "0xEF"
+   // while there is still something to read and it's still not the end "0xEF" (end of hexidecimal string)
      
   }   
+  
   return mp3answer; 
  }
- 
-
- 
-
-
-
-
-
