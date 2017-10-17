@@ -2,38 +2,35 @@
   Simple SerialMP3Player example of YX5300 chip.
   This example code is in the public domain.
 
-   
   by Salvador Rueda
  */
 
 #include "SerialMP3Player.h"
 
-
 SerialMP3Player mp3;
 
-
 void setup() {
-  Serial.begin(9600);
-  mp3.begin(9600);
-  delay(500);
+  Serial.begin(9600);     //start serial interface
+  mp3.begin(9600);        //start mp3-communication
+  delay(500);             //wait for init
 
-  mp3.sendCommand(CMD_SEL_DEV, 0, 2);
-  delay(500);
+  mp3.sendCommand(CMD_SEL_DEV, 0, 2);   //select sd-card
+  delay(500);             //wait for init
 }
 
 // the loop function runs over and over again forever
 void loop() {
   char op; // Menu option from Serial
-  String r = "";
+  String r = "";    //display string
 
   if (Serial.available()){
-    op = Serial.read();
+    op = Serial.read();     //if serial monitor = init, then read the strings from serialmonitor
     menu(op);
   }
   
  // Check for the answer.
   r = mp3.decodeMP3Answer();
-  if(r!="") Serial.println(r);
+  if(r!="") Serial.println(r);    //decode answers from mp3
   //delay(1000);
 }
 
@@ -42,12 +39,12 @@ void menu(char op){
    switch (op) {
     case '?':
     case 'h':
-      Serial.println("Testig SerialMP3Player Commands:  ");
-      Serial.println(" t     Test a command");
-      Serial.println(" s     Stop ");
+      Serial.println("Testing SerialMP3Player Commands:");
+      Serial.println("t - Test a command");
+      Serial.println("s - Stop ");
       break;
       
-    case 't':
+    case 't':             //IS 'T' ACTUALLY IMPLEMENTED??
       // Test play next
       //  mp3.playNext();
 
@@ -129,52 +126,47 @@ void menu(char op){
       //  mp3.sendCommand(CMD_NEXT);
       //  mp3.sendCommand(1);
 
-      
-      
       break;
 
     case 'l':
-      Serial.println("loop ");
+      Serial.println("Loop");
       mp3.playSL(3);
       break;
 
     case 'p':
-      Serial.println("pause ");
+      Serial.println("Pause");
       mp3.pause();
       break;
 
     case 'P':
-      Serial.println("play ");
+      Serial.println("Play");
       mp3.play();
       break;
 
       
     case 's':
-      Serial.println("Stop ");
+      Serial.println("Stop");
       mp3.stop();
       break;
       
  case 'n':
-      Serial.println("Next ");
+      Serial.println("Next");
       mp3.playNext();
       break;
 
  case 'u':
-      Serial.println("VolUp ");
+      Serial.println("Volume Up");
       mp3.volUp();
       break;
 
  case 'd':
-      Serial.println("VolDown ");
+      Serial.println("Volume Down");
       mp3.volDown();
       break;
       
  case 'w':
-      Serial.println("w. vol 20");
+      Serial.println("Set Volume 20 out of 30");
       mp3.setVol(20);
       break;
-      
-      
    }
 }
-
