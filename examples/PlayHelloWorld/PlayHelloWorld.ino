@@ -6,7 +6,7 @@
     GND → GND
     VCC → 5V
     TX → pin 5
-    RX → pin 6
+    RX → pin 10 
 
   After compile and upload the code you must hear “Hello world” over and over.
 
