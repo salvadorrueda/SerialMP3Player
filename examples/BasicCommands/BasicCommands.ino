@@ -5,7 +5,7 @@
   Connect the Serial MP3 Player to the Arduino board
     GND → GND
     VCC → 5V
-    TX → pin 5
+    TX → pin 11
     RX → pin 10
 
   After compile and upload the code,

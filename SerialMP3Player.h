@@ -8,6 +8,13 @@
 #define SerialMP3Player_h
 
 #include <Arduino.h>
+#include <SoftwareSerial.h>
+
+#define ARDUINO_RX 10  //should connect to TX of the Serial MP3 Player module
+#define ARDUINO_TX 11  //connect to RX of the module
+
+//#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
+
 
 #define CMD_NEXT             0X01 // Play next file
 #define CMD_PREV             0X02 // Play previous file
@@ -45,16 +52,6 @@
 
 
 /************ Opitons **************************/
-
-
-
-
-#include <SoftwareSerial.h>
-
-#define ARDUINO_RX 10  //should connect to TX of the Serial MP3 Player module
-#define ARDUINO_TX 6  //connect to RX of the module
-
-//#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
 
 class SerialMP3Player{
   // Comment SoftwareSerial for MEGA.
