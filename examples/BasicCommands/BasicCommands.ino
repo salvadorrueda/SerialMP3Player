@@ -65,11 +65,35 @@ void menu(char op){
         mp3.stop();
         break;
 
+    case '>':
+        Serial.println("Next");
+        mp3.playNext();
+        break;
+
+    case '<':
+        Serial.println("Previous");
+        mp3.playPrevious();
+        break;
+
+    case '+':
+        Serial.println("Volume UP");
+        mp3.volUp();
+        break;
+
+    case '-':
+        Serial.println("Volume Down");
+        mp3.volDown();
+        break;
+
     default:
         Serial.println("SerialMP3Player Basic Commands:");
-        Serial.println("P - Play");
-        Serial.println("p - pause");
-        Serial.println("s - stop ");
+        Serial.println(" P - Play");
+        Serial.println(" p - pause");
+        Serial.println(" s - stop ");
+        Serial.println(" > - Next");
+        Serial.println(" < - Previous");
+        Serial.println(" + - Volume UP");
+        Serial.println(" - - Volume DOWN");
         break;
   }
 }
