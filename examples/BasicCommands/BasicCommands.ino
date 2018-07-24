@@ -34,7 +34,7 @@ void setup() {
   mp3.sendCommand(CMD_SEL_DEV, 0, 2);   //select sd-card
   delay(500);             // wait for init
 
-  menu(' '); // print the menu options.
+  menu('?'); // print the menu options.
 }
 
 // the loop function runs over and over again forever
@@ -55,6 +55,18 @@ void loop() {
 void menu(char op){
   // Menu
   switch (op){
+    case '?':
+    case 'h':
+        Serial.println("SerialMP3Player Basic Commands:");
+        Serial.println(" P - Play");
+        Serial.println(" p - pause");
+        Serial.println(" s - stop ");
+        Serial.println(" > - Next");
+        Serial.println(" < - Previous");
+        Serial.println(" + - Volume UP");
+        Serial.println(" - - Volume DOWN");
+        break;
+
     case 'P':
         Serial.println("Play");
         mp3.play();
@@ -88,17 +100,6 @@ void menu(char op){
     case '-':
         Serial.println("Volume Down");
         mp3.volDown();
-        break;
-
-    default:
-        Serial.println("SerialMP3Player Basic Commands:");
-        Serial.println(" P - Play");
-        Serial.println(" p - pause");
-        Serial.println(" s - stop ");
-        Serial.println(" > - Next");
-        Serial.println(" < - Previous");
-        Serial.println(" + - Volume UP");
-        Serial.println(" - - Volume DOWN");
         break;
   }
 }
