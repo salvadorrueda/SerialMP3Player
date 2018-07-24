@@ -81,7 +81,7 @@ void SerialMP3Player::play(byte n, byte vol){
 void SerialMP3Player::playF(byte f){
    // Play all files in the f folder
 
-   sendCommand(CMD_FOLDER_CYCLE, f);
+   sendCommand(CMD_FOLDER_CYCLE, f, 0);
 }
 
 
@@ -165,7 +165,7 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
   Serial.print("Sending: ");
   Serial.println(mp3send); // watch what are we sending
 
-  //delay(200);  // Wait between sending commands.
+  delay(1000);  // Wait between sending commands.
 
 }
 
