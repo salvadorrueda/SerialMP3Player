@@ -66,6 +66,7 @@ void menu(char op){
         Serial.println(" < - Previous");
         Serial.println(" + - Volume UP");
         Serial.println(" - - Volume DOWN");
+        Serial.println(" m - Set to Max Volume");
         Serial.println(" c - Query current file");
         Serial.println(" q - Query status");
         Serial.println(" x - Query folder count");
@@ -105,6 +106,12 @@ void menu(char op){
     case '-':
         Serial.println("Volume Down");
         mp3.volDown();
+        break;
+
+    case 'm':
+        Serial.println("Set to Max Volume");
+        mp3.setVol(30);
+        mp3.qVol();
         break;
 
     case 'c':
