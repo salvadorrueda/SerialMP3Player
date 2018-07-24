@@ -95,7 +95,7 @@ class SerialMP3Player{
      void qVol();       // Ask for the volumen // !!! Sometimes board stop working
      void qFTracks();   // Ask for the number of tracks folders // Nonsense answer
      void qTTracks();   // Ask for the total of tracks
-     void qTFolders();  // Ask for the number of folders  // Nonsense answer
+     void qTFolders();  // Ask for the number of folders  
 
 
 

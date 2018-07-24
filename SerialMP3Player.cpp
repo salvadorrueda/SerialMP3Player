@@ -122,7 +122,7 @@ void SerialMP3Player::qTTracks(){
 }
 
 
-void SerialMP3Player::qTFolders(){  // !!! Nonsense answer
+void SerialMP3Player::qTFolders(){
   // Ask for the number of folders
    sendCommand(CMD_QUERY_FLDR_COUNT);
 }
