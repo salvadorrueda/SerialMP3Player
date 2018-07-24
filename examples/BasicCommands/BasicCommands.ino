@@ -58,6 +58,7 @@ void menu(char op){
     case '?':
     case 'h':
         Serial.println("SerialMP3Player Basic Commands:");
+        Serial.println(" ? - Display Menu options. ");
         Serial.println(" P - Play");
         Serial.println(" p - pause");
         Serial.println(" s - stop ");
@@ -65,6 +66,10 @@ void menu(char op){
         Serial.println(" < - Previous");
         Serial.println(" + - Volume UP");
         Serial.println(" - - Volume DOWN");
+        Serial.println(" c - Query current file");
+        Serial.println(" q - Query status");
+        Serial.println(" x - Query folder count");
+        Serial.println(" t - Query total file count");
         break;
 
     case 'P':
@@ -101,5 +106,26 @@ void menu(char op){
         Serial.println("Volume Down");
         mp3.volDown();
         break;
+
+    case 'c':
+        Serial.println("Query current file");
+        mp3.qPlaying();
+        break;
+
+    case 'q':
+        Serial.println("Query status");
+        mp3.qStatus();
+        break;
+
+    case 'x':
+        Serial.println("Query folder count");
+        mp3.qTFolders();
+        break;
+
+    case 't':
+        Serial.println("Query total file count");
+        mp3.qTTracks();
+        break;
+
   }
 }
