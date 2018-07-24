@@ -45,6 +45,11 @@ void loop() {
     op = Serial.read();
     menu(op);
   }
+
+  // Check for the answer.
+  if (mp3.available()){
+    Serial.println(mp3.decodeMP3Answer()); // print decoded answers from mp3
+  }
 }
 
 void menu(char op){
