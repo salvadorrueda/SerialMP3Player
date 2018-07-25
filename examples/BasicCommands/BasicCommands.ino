@@ -70,6 +70,7 @@ void menu(char op, int nval){
         Serial.println(" ? - Display Menu options. ");
         Serial.println(" P01 - Play 01 file");
         Serial.println(" F01 - Play 01 folder");
+        Serial.println(" S01 - Play 01 file in loop");
         Serial.println(" p - pause");
         Serial.println(" s - stop ");
         Serial.println(" > - Next");
@@ -93,6 +94,10 @@ void menu(char op, int nval){
         mp3.playF(nval);
         break;
 
+    case 'S':
+        Serial.println("Play loop");
+        mp3.playSL(nval);
+        break;
 
     case 'p':
         Serial.println("Pause");
@@ -156,7 +161,7 @@ void menu(char op, int nval){
 void c_c(){
   // Check for c is a command or a digit
       // if c is a 'v' or 'p' wait for the number XX
-    if (c=='v' || c=='P' || c=='F'){
+    if (c=='v' || c=='P' || c=='F' || c=='S'){
       cmd=c;
     }else{
       // maybe c is part of XX number
