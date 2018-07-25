@@ -53,7 +53,7 @@ void loop() {
 
   if (Serial.available()){
     c = Serial.read();
-    c_c(); // check c for a command or a digit.
+    decode_c(); // Decode c.
   }
   // Check for the answer.
   if (mp3.available()){
@@ -164,26 +164,28 @@ void menu(char op, int nval){
   }
 }
 
-void c_c(){
-  // Check for c is a command or a digit
-      // if c is a 'v' or 'p' wait for the number XX
-    if (c=='v' || c=='P' || c=='F' || c=='S'){
-      cmd=c;
-    }else{
-      // maybe c is part of XX number
-      if(c>='0' && c<='9'){
-        // if c is a digit
-        if(cmd1==' ') cmd1 = c;
+void decode_c(){
+  // Decode c looking for a specific command or a digit
+
+  // if c is a 'v' or 'p' wait for the number XX
+  if (c=='v' || c=='P' || c=='F' || c=='S'){
+    cmd=c;
+  }else{
+    // maybe c is part of XX number
+    if(c>='0' && c<='9'){
+      // if c is a digit
+      if(cmd1==' '){
         // if cmd1 is empty then c is the first digit
-        else{
-          // if cmd1 is not empty c is the second digit
-          menu(cmd, ((cmd1-'0')*10)+(c-'0'));
-          cmd = ' ';
-          cmd1 = ' ';
-        }
-       }else{
-        // c is not a digit nor 'v' or 'p' so just call menu(c, nval);
-        menu(c, 0);
+        cmd1 = c;
+      }else{
+        // if cmd1 is not empty c is the second digit
+        menu(cmd, ((cmd1-'0')*10)+(c-'0'));
+        cmd = ' ';
+        cmd1 = ' ';
       }
+    }else{
+      // c is not a digit nor 'v' or 'p' so just call menu(c, nval);
+      menu(c, 0);
     }
+  }
 }
