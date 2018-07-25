@@ -13,7 +13,8 @@
   ? - Display Menu options.
   P01 - Play 01 file
   F01 - Play 01 folder
-  p - pause
+  p - play
+  a - pause
   s - stop
   > - Next
   < - Previous
@@ -184,7 +185,7 @@ void decode_c(){
         cmd1 = ' ';
       }
     }else{
-      // c is not a digit nor 'v' or 'p' so just call menu(c, nval);
+      // c is not a digit nor 'v', 'P', 'F' or 'S' so just call menu(c, nval);
       menu(c, 0);
     }
   }
