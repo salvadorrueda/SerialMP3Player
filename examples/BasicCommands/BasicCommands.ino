@@ -33,7 +33,10 @@
 
 SerialMP3Player mp3;
 
+
 void setup() {
+  mp3.showDebug(1);       // print what we are sending to the mp3 board.
+
   Serial.begin(9600);     // start serial interface
   mp3.begin(9600);        // start mp3-communication
   delay(500);             // wait for init
