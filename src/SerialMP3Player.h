@@ -61,6 +61,8 @@ class SerialMP3Player{
 
 
    public:
+     SerialMP3Player();
+
      void sendCommand(byte command);
      void sendCommand(byte command, byte dat2);
      void sendCommand(byte command, byte dat1, byte dat2);
@@ -97,13 +99,14 @@ class SerialMP3Player{
      void qTTracks();   // Ask for the total of tracks
      void qTFolders();  // Ask for the number of folders
 
+     void showDebug(bool on); // true to show debug messages
 
 
    private:
      String sanswer();
      int shex2int(char *s, int n);
      String sbyte2hex(byte b);
-
+     bool _showDebugMessages;
 };
 
 

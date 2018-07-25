@@ -11,6 +11,15 @@
 // Uncomment next line if you are using an Arduino Mega.
 //#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
 
+SerialMP3Player::SerialMP3Player(){
+   _showDebugMessages = false;
+}
+
+void SerialMP3Player::showDebug(bool op){
+  // showDebug (op) 0:OFF 1:ON 
+    _showDebugMessages = op;
+}
+
 void SerialMP3Player::begin(int bps){
   Serial3.begin(bps);
 }
@@ -161,9 +170,10 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
     Serial3.write(Send_buf[i]) ;
     mp3send+=sbyte2hex(Send_buf[i]);
   }
-
-  Serial.print("Sending: ");
-  Serial.println(mp3send); // watch what are we sending
+  if (_showDebugMessages){
+     Serial.print("Sending: ");
+     Serial.println(mp3send); // watch what are we sending
+  }
 
   delay(1000);  // Wait between sending commands.
 
