@@ -71,7 +71,8 @@ void menu(char op, int nval){
         Serial.println(" P01 - Play 01 file");
         Serial.println(" F01 - Play 01 folder");
         Serial.println(" S01 - Play 01 file in loop");
-        Serial.println(" p - pause");
+        Serial.println(" p - Play");
+        Serial.println(" a - pause");
         Serial.println(" s - stop ");
         Serial.println(" > - Next");
         Serial.println(" < - Previous");
@@ -100,6 +101,11 @@ void menu(char op, int nval){
         break;
 
     case 'p':
+        Serial.println("Play");
+        mp3.play();
+        break;
+
+    case 'a':
         Serial.println("Pause");
         mp3.pause();
         break;
