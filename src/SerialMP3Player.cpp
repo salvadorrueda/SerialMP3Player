@@ -12,24 +12,31 @@
 //#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
 
 SerialMP3Player::SerialMP3Player(){
+   //SoftwareSerial Serial3 = SoftwareSerial(10, 11);
+   Serial3 = new SoftwareSerial(10, 11);
+   _showDebugMessages = false;
+}
+SerialMP3Player::SerialMP3Player(int RX, int TX){
+   //SoftwareSerial Serial3 = SoftwareSerial(RX, TX);
+   Serial3 = new SoftwareSerial(RX, TX);
    _showDebugMessages = false;
 }
 
 void SerialMP3Player::showDebug(bool op){
-  // showDebug (op) 0:OFF 1:ON 
+  // showDebug (op) 0:OFF 1:ON
     _showDebugMessages = op;
 }
 
 void SerialMP3Player::begin(int bps){
-  Serial3.begin(bps);
+  Serial3->begin(bps);
 }
 
 int SerialMP3Player::available(){
-  return Serial3.available();
+  return Serial3->available();
 }
 
 char SerialMP3Player::read(){
-  return Serial3.read();
+  return Serial3->read();
 }
 
 void SerialMP3Player::playNext(){
@@ -167,7 +174,7 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
 
   for(int i=0; i<8; i++)
   {
-    Serial3.write(Send_buf[i]) ;
+    Serial3->write(Send_buf[i]) ;
     mp3send+=sbyte2hex(Send_buf[i]);
   }
   if (_showDebugMessages){
@@ -296,9 +303,9 @@ String SerialMP3Player::sanswer(void)
   String mp3answer="";                // Answer from the Serial3.
   int iansbuf = 0;
 
-  if (Serial3.available()){
+  if (Serial3->available()){
    do{
-    b = Serial3.read();
+    b = Serial3->read();
 
     if(b == 0x7E){  // if there are "0x7E" it's a beginning.
       iansbuf=0;    //  ansbuf index to zero.

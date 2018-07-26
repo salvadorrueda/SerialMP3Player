@@ -20,7 +20,10 @@
 
 #include "SerialMP3Player.h"
 
-SerialMP3Player mp3;
+#define TX 11
+#define RX 10
+
+SerialMP3Player mp3(RX,TX);
 
 void setup() {
   Serial.begin(9600);     // start serial interface

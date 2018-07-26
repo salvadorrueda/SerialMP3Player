@@ -13,6 +13,7 @@
   ? - Display Menu options.
   P01 - Play 01 file
   F01 - Play 01 folder
+  S01 - Play 01 file in loop
   p - play
   a - pause
   s - stop
@@ -31,7 +32,10 @@
 
 #include "SerialMP3Player.h"
 
-SerialMP3Player mp3;
+#define TX 11
+#define RX 10
+
+SerialMP3Player mp3(RX,TX);
 
 
 void setup() {

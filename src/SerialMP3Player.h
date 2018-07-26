@@ -10,12 +10,6 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#define ARDUINO_RX 10  //should connect to TX of the Serial MP3 Player module
-#define ARDUINO_TX 11  //connect to RX of the module
-
-//#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
-
-
 #define CMD_NEXT             0X01 // Play next file
 #define CMD_PREV             0X02 // Play previous file
 #define CMD_PLAYN            0X03 // Play n file from (1-255)
@@ -54,14 +48,12 @@
 /************ Opitons **************************/
 
 class SerialMP3Player{
-  // Comment SoftwareSerial for MEGA.
-   SoftwareSerial Serial3 = SoftwareSerial(ARDUINO_RX, ARDUINO_TX);
 
    byte ansbuf[15] = {0}; // Buffer for the answers.
 
-
    public:
      SerialMP3Player();
+     SerialMP3Player(int RX, int TX);
 
      void sendCommand(byte command);
      void sendCommand(byte command, byte dat2);
@@ -101,12 +93,12 @@ class SerialMP3Player{
 
      void showDebug(bool on); // true to show debug messages
 
-
    private:
      String sanswer();
      int shex2int(char *s, int n);
      String sbyte2hex(byte b);
      bool _showDebugMessages;
+     SoftwareSerial *Serial3;
 };
 
 
