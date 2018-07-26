@@ -7,6 +7,7 @@ Buy the MP3 module on
 
 http://www.dx.com/p/uart-control-serial-mp3-music-player-module-for-arduino-avr-arm-pic-blue-silver-342439#.VfHyobPh5z0
 
+https://www.aliexpress.com/item/YX5300-UART-Control-Serial-MP3-Music-Player-Module-For-Arduino-AVR-ARM-PIC-CF-Micro-SD/32673728703.html
 
 
 
