@@ -47,7 +47,6 @@ void SerialMP3Player::playPrevious(){
   sendCommand(CMD_PREV);
 }
 
-
 void SerialMP3Player::volUp(){
    sendCommand(CMD_VOL_UP);
 }
@@ -80,8 +79,6 @@ void SerialMP3Player::pause(){
    sendCommand(CMD_PAUSE);
 }
 
-
-
 void SerialMP3Player::play(byte n){
    // n number of the file that must be played.
    // n possible values (1-255)
@@ -111,7 +108,6 @@ void SerialMP3Player::stop(){
    sendCommand(CMD_STOP_PLAY);
 }
 
-
 void SerialMP3Player::qPlaying(){
   // Ask for the file is playing
    sendCommand(CMD_PLAYING_N);
@@ -137,13 +133,25 @@ void SerialMP3Player::qTTracks(){
    sendCommand(CMD_QUERY_TOT_TRACKS);
 }
 
-
 void SerialMP3Player::qTFolders(){
   // Ask for the number of folders
    sendCommand(CMD_QUERY_FLDR_COUNT);
 }
 
+void SerialMP3Player::sleep(){
+  // Send sleep command
+  sendCommand(CMD_SLEEP_MODE);
+}
 
+void SerialMP3Player::wakeup(){
+  // Send wake up command
+  sendCommand(CMD_WAKE_UP);
+}
+
+void SerialMP3Player::reset(){
+  // Send reset command
+  sendCommand(CMD_RESET);
+}
 
 
 
@@ -183,7 +191,6 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
   }
 
   delay(1000);  // Wait between sending commands.
-
 }
 
 //String sanswer(void);
@@ -286,8 +293,7 @@ String SerialMP3Player::sbyte2hex(byte b)
 /*Return: String.  the answer                                                   */
 
 
-String SerialMP3Player::sanswer(void)
-{
+String SerialMP3Player::sanswer(void){
   // Response Structure  0x7E 0xFF 0x06 RSP 0x00 0x00 DAT 0xFE 0xBA 0xEF
   //
   // RSP Response code

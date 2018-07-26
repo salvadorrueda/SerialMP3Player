@@ -63,6 +63,7 @@ class SerialMP3Player{
      int available();
      char read();
      String decodeMP3Answer();
+
      void playNext();             // Play next file
      void playPrevious();         // Play previous file
      void play();                 // Play
@@ -90,6 +91,10 @@ class SerialMP3Player{
      void qFTracks();   // Ask for the number of tracks folders // Nonsense answer
      void qTTracks();   // Ask for the total of tracks
      void qTFolders();  // Ask for the number of folders
+
+     void sleep();     // Send sleep command
+     void wakeup();    // Send wake up command
+     void reset();     // Send reset command
 
      void showDebug(bool on); // true to show debug messages
 

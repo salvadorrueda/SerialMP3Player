@@ -91,6 +91,9 @@ void menu(char op, int nval){
         Serial.println(" q - Query status");
         Serial.println(" x - Query folder count");
         Serial.println(" t - Query total file count");
+        Serial.println(" r - Reset");
+        Serial.println(" e - Sleep");
+        Serial.println(" w - Wake up");        
         break;
 
     case 'P':
@@ -169,6 +172,20 @@ void menu(char op, int nval){
         mp3.qTTracks();
         break;
 
+    case 'r':
+        Serial.println("Reset");
+        mp3.reset();
+        break;
+
+    case 'e':
+        Serial.println("Sleep");
+        mp3.sleep();
+        break;
+
+    case 'w':
+        Serial.println("Wake up");
+        mp3.wakeup();
+        break;
   }
 }
 
