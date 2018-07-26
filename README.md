@@ -1,7 +1,8 @@
 # SerialMP3Player
 Arduino Library for Serial MP3 Player board (YX5300 chip)
 
-![Serial MP3 Player (YX5300 chip)](http://img.dxcdn.com/productimages/sku_342439_1.jpg)
+![Serial MP3 Player (YX5300 chip)](https://github.com/salvadorrueda/SerialMP3Player/blob/master/extras/SerialMP3Player_YX5300.png)
+
 
 You can buy the MP3 module on
 
