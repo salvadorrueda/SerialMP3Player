@@ -27,7 +27,7 @@
 #define CMD_PLAY             0X0D // Play
 #define CMD_PAUSE            0X0E // Pause
 
-#define CMD_PLAY_F_FILE      0X0F // ERROR // Play n file (name not number) in the f folder
+//#define CMD_PLAY_F_FILE      0X0F // only avaible for Flash not SD Card.
 
 #define CMD_STOP_PLAY        0X16 // Stop
 #define CMD_FOLDER_CYCLE     0X17 // Play all the files in the f folder
@@ -73,20 +73,19 @@ class SerialMP3Player{
      void setVol(byte v);     // Set Volumen (0-30)
 
      void playSL(byte n);         // Play Single loop  n file.
-     void playSL(byte f, byte n); // Play Single loop play n file from f folder. :?
+     void playSL(byte f, byte n); // Play Single loop play n file from f folder.
 
      void pause();                // Pause
 
      void playF(byte f);          // Play all files in the f folder
-     void playFN(byte f, byte n); // Play file named n from f folder
 
      void stop();                 // Stop playing
 
      // Query commands
      void qPlaying();   // Ask for the file is playing
      void qStatus();    // Ask for the status
-     void qVol();       // Ask for the volumen // !!! Sometimes board stop working
-     void qFTracks();   // Ask for the number of tracks folders // Nonsense answer
+     void qVol();       // Ask for the volumen
+     void qFTracks();   // Ask for the number of tracks folders
      void qTTracks();   // Ask for the total of tracks
      void qTFolders();  // Ask for the number of folders
 
@@ -103,7 +102,7 @@ class SerialMP3Player{
      bool _showDebugMessages;
      SoftwareSerial *Serial3;
      byte ansbuf[15] = {0}; // Buffer for the answers.
-     
+
 };
 
 

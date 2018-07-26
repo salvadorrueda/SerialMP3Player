@@ -65,7 +65,6 @@ void SerialMP3Player::playSL(byte n){
    sendCommand(CMD_PLAY_SLOOP, n);
 }
 
-// Doesn't seems work properly :?
 void SerialMP3Player::playSL(byte f, byte n){
    // Single loop play n file from f folder
    sendCommand(CMD_PLAY_SLOOP, f, n);
@@ -95,13 +94,6 @@ void SerialMP3Player::playF(byte f){
    // Play all files in the f folder
 
    sendCommand(CMD_FOLDER_CYCLE, f, 0);
-}
-
-
-void SerialMP3Player::playFN(byte f, byte n){
-   // Play named n files in the f folder
-
-   sendCommand(CMD_PLAY_F_FILE, f, n);
 }
 
 void SerialMP3Player::stop(){
