@@ -79,6 +79,7 @@ void menu(char op, int nval){
         Serial.println(" P01 - Play 01 file");
         Serial.println(" F01 - Play 01 folder");
         Serial.println(" S01 - Play 01 file in loop");
+        Serial.println(" V01 - Play 01 file, volume 30");
         Serial.println(" p - Play");
         Serial.println(" a - pause");
         Serial.println(" s - stop ");
@@ -93,7 +94,7 @@ void menu(char op, int nval){
         Serial.println(" t - Query total file count");
         Serial.println(" r - Reset");
         Serial.println(" e - Sleep");
-        Serial.println(" w - Wake up");        
+        Serial.println(" w - Wake up");
         break;
 
     case 'P':
@@ -110,6 +111,12 @@ void menu(char op, int nval){
         Serial.println("Play loop");
         mp3.playSL(nval);
         break;
+
+    case 'V':
+        Serial.println("Play file at 30 volume");
+        mp3.play(nval,30);
+        break;
+
 
     case 'p':
         Serial.println("Play");
@@ -192,8 +199,8 @@ void menu(char op, int nval){
 void decode_c(){
   // Decode c looking for a specific command or a digit
 
-  // if c is a 'v' or 'p' wait for the number XX
-  if (c=='v' || c=='P' || c=='F' || c=='S'){
+  // if c is a 'v', 'P', 'F', 'S' or 'V' wait for the number XX
+  if (c=='v' || c=='P' || c=='F' || c=='S' || c=='V'){
     cmd=c;
   }else{
     // maybe c is part of XX number
