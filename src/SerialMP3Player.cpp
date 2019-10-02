@@ -162,7 +162,10 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
 
   // Command Structure 0x7E 0xFF 0x06 CMD FBACK DAT1 DAT2 0xEF
 
+  #ifndef NO_SERIALMP3_DELAY
   delay(20);
+  #endif
+
   Send_buf[0] = 0x7E;    // Start byte
   Send_buf[1] = 0xFF;    // Version
   Send_buf[2] = 0x06;    // Command length not including Start and End byte.
@@ -182,7 +185,10 @@ void SerialMP3Player::sendCommand(byte command, byte dat1, byte dat2){
      Serial.println(mp3send); // watch what are we sending
   }
 
-  delay(1000);  // Wait between sending commands.
+  #ifndef NO_SERIALMP3_DELAY
+  delay(1000);
+  // Wait between sending commands.
+  #endif
 }
 
 //String sanswer(void);
