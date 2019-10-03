@@ -18,3 +18,8 @@ http://joanruedapauweb.com/blog/index.php/2017/02/07/arduino-serial-mp3-player-y
 
 (Chinese)(Catalex_YX5300_Docs.zip files)
 http://pan.baidu.com/s/1hqilpB2
+
+
+## A Note on Delays:
+
+To ensure the integrity of serial communication, this library implements a very conservative 20 ms delay before and 1000 ms delay after sending a command. More complicated sketches that can manage their own delays between serial commands can disable this delay with the preprocessor definition NO_SERIALMP3_DELAY.
